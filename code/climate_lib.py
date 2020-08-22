@@ -1,3 +1,6 @@
+# Aaron Wollman
+# This file contains code that can be shared between files.
+
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session

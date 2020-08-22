@@ -1,6 +1,8 @@
 # Aaron Wollman
+# This file contains an API that runs in Flask.
 
 from flask import Flask, jsonify
+# Ignore the warning below, the import works.
 from climate_lib import Climate_Database, year_ago
 
 app = Flask(__name__)
@@ -29,6 +31,11 @@ def index():
 def precipitation():
     """
     Returns a list of precipitations and their dates.
+    """
+
+    """
+    Note: The session will be closed once Climate_Database 
+    deconstructs at the end of the function.
     """
     database = Climate_Database()
     precip_data = database.get_all_precip_data()
@@ -82,16 +89,28 @@ def tobs():
 
 @app.route("/api/v1.0/<start>")
 def stats_start_only(start):
+    """
+    Returns temperature statistics from a start date to the
+    lastest date.
+    """
     database = Climate_Database()
     end = database.get_latest_date()
     return get_stats_json(database, start, end)
 
 @app.route("/api/v1.0/<start>/<end>")
 def stats(start, end):
+    """
+    Returns temperature statistics from a start date
+    to the end date.
+    """
     database = Climate_Database()
     return get_stats_json(database, start, end)
 
 def get_stats_json(database, start, end):
+    """
+    Returns temperature statistics 
+    from a start date to the end date in the database.
+    """
     stats = database.get_temp_stats_by_date(start, end)
     min_temp = stats["min"]
     max_temp = stats["max"]
